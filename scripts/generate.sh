@@ -9,20 +9,20 @@ fi
 
 DAY=$2
 
-BASE_SRC_PATH="src/${1}/"
-BASE_INPUT_PATH="input/${1}/"
+BASE_SRC_PATH="src/${1}"
+BASE_INPUT_PATH="input/${1}"
 
 SAMPLE_1="${BASE_INPUT_PATH}/q${DAY}_p1_sample.txt"
 SAMPLE_2="${BASE_INPUT_PATH}/q${DAY}_p2_sample.txt"
-PUZZLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_p1_input.txt"
+PUZZLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_input.txt"
 
-echo "Setting up input files at ${BASE_INPUT_PATH} ..."
+echo "Setting up input files at ${BASE_INPUT_PATH}/ ..."
 touch $SAMPLE_1
 touch $SAMPLE_2
 touch $PUZZLE_INPUT
 
-echo "Writing output to ${BASE_SRC_PATH}q${DAY}.rs ..."
-cat >"${BASE_SRC_PATH}q${DAY}.rs" <<EOF
+echo "Writing output to ${BASE_SRC_PATH}/q${DAY}.rs ..."
+cat >"${BASE_SRC_PATH}/q${DAY}.rs" <<EOF
 use crate::utils::parser::FileLines;
 
 struct Input {
@@ -51,7 +51,7 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
 mod tests {
     use super::{_part_1, _part_2};
 
-    const INPUT: &str = "${PUZZLE_INPUT}}";
+    const INPUT: &str = "${PUZZLE_INPUT}";
     const FIRST_INPUT_SAMPLE: &str = "${SAMPLE_1}";
     const SECOND_INPUT_SAMPLE: &str = "${SAMPLE_2}";
 
@@ -80,3 +80,7 @@ mod tests {
     }
 }
 EOF
+
+echo "pub mod q${DAY};" >>${BASE_SRC_PATH}/mod.rs
+
+echo "Done!"
