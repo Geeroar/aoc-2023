@@ -54,13 +54,11 @@ fn _part_1(input: &str) -> std::io::Result<u32> {
                     _ => {}
                 }
             }
-
         }
         if game_is_possible {
             println!("Game {} is possible", game_id);
             result += game_id;
         }
-
     }
     Ok(result)
 }
@@ -102,10 +100,8 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
                     _ => {}
                 }
             }
-
         }
         result += (min_blue * min_green * min_red);
-
     }
     Ok(result)
 }
@@ -139,6 +135,6 @@ mod tests {
     #[test]
     fn q02_part_2_main() {
         let result = _part_2(INPUT);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 69929);
     }
 }
