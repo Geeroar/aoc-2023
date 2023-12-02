@@ -96,7 +96,6 @@ pub fn part_2(file_path: &str) -> std::io::Result<u32> {
         numbers.push(number);
     }
 
-    // sum numbers
     let sum: u32 = numbers.iter().sum();
 
     Ok(sum)
