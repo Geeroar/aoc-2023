@@ -115,25 +115,25 @@ mod tests {
     const SECOND_INPUT_SAMPLE: &str = "input/roar/q02_p2_sample.txt";
 
     #[test]
-    fn q02_part_1_sample() {
+    fn roar_q02_p1_sample() {
         let result = _part_1(FIRST_INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 8);
     }
 
     #[test]
-    fn q02_part_1_main() {
+    fn roar_q02_p1_main() {
         let result = _part_1(INPUT);
         assert_eq!(result.unwrap(), 2164);
     }
 
     #[test]
-    fn q02_part_2_sample() {
+    fn roar_q02_p2_sample() {
         let result = _part_2(SECOND_INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 2286);
     }
 
     #[test]
-    fn q02_part_2_main() {
+    fn roar_q02_p2_main() {
         let result = _part_2(INPUT);
         assert_eq!(result.unwrap(), 69929);
     }
