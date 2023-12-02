@@ -25,18 +25,28 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
 fn _match_indexes(s: &str) -> Vec<(usize, u32)> {
     let mut v = vec![];
     let pairs = [
-        ("1", 1), ("one", 1),
-        ("2", 2), ("two", 2),
-        ("3", 3), ("three", 3),
-        ("4", 4), ("four", 4),
-        ("5", 5), ("five", 5),
-        ("6", 6), ("six", 6),
-        ("7", 7), ("seven", 7),
-        ("8", 8), ("eight", 8),
-        ("9", 9), ("nine", 9),
+        ("1", 1),
+        ("one", 1),
+        ("2", 2),
+        ("two", 2),
+        ("3", 3),
+        ("three", 3),
+        ("4", 4),
+        ("four", 4),
+        ("5", 5),
+        ("five", 5),
+        ("6", 6),
+        ("six", 6),
+        ("7", 7),
+        ("seven", 7),
+        ("8", 8),
+        ("eight", 8),
+        ("9", 9),
+        ("nine", 9),
     ];
     for pair in pairs {
-        s.match_indices(pair.0).for_each(|(i, _)| v.push((i, pair.1)));
+        s.match_indices(pair.0)
+            .for_each(|(i, _)| v.push((i, pair.1)));
     }
     v.sort_by_key(|k| k.0);
     v
