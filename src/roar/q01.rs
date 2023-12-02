@@ -3,7 +3,7 @@ use std::{
     io::{self, BufRead},
 };
 
-fn read_lines(file_path: &str) -> std::io::Result<Vec<String>> {
+fn _read_lines(file_path: &str) -> std::io::Result<Vec<String>> {
     let file: File = File::open(file_path).expect("Unable to open file");
 
     let reader: io::BufReader<File> = io::BufReader::new(file);
@@ -17,7 +17,7 @@ fn read_lines(file_path: &str) -> std::io::Result<Vec<String>> {
     Ok(lines)
 }
 
-fn get_number_as_word_if_exists(word_to_check: &str, words: &[&str]) -> Option<usize> {
+fn _get_number_as_word_if_exists(word_to_check: &str, words: &[&str]) -> Option<usize> {
     words.iter().enumerate().find_map(|(index, &word)| {
         if word_to_check.contains(word) {
             Some(index + 1)
@@ -28,7 +28,7 @@ fn get_number_as_word_if_exists(word_to_check: &str, words: &[&str]) -> Option<u
 }
 
 fn _part_1(file_path: &str) -> std::io::Result<u32> {
-    let lines: Vec<String> = read_lines(file_path).unwrap();
+    let lines: Vec<String> = _read_lines(file_path).unwrap();
     let mut numbers: Vec<u32> = Vec::new();
 
     for line in lines.iter() {
@@ -48,7 +48,7 @@ fn _part_1(file_path: &str) -> std::io::Result<u32> {
 }
 
 fn _part_2(file_path: &str) -> std::io::Result<u32> {
-    let lines: Vec<String> = read_lines(file_path).unwrap();
+    let lines: Vec<String> = _read_lines(file_path).unwrap();
     let mut numbers: Vec<u32> = Vec::new();
     let number_lookup = [
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
@@ -64,7 +64,7 @@ fn _part_2(file_path: &str) -> std::io::Result<u32> {
                 break;
             }
             word_to_check.push(c);
-            match get_number_as_word_if_exists(&word_to_check, &number_lookup) {
+            match _get_number_as_word_if_exists(&word_to_check, &number_lookup) {
                 Some(number) => {
                     first_number = number as u32;
                     break;
@@ -82,7 +82,7 @@ fn _part_2(file_path: &str) -> std::io::Result<u32> {
                 break;
             }
             word_to_check.insert(0, c);
-            match get_number_as_word_if_exists(&word_to_check, &number_lookup) {
+            match _get_number_as_word_if_exists(&word_to_check, &number_lookup) {
                 Some(number) => {
                     second_number = number as u32;
                     break;
@@ -107,21 +107,21 @@ mod tests {
 
     #[test]
     fn test_part_1_sample() {
-        assert_eq!(_part_1("input/rtob/q1-p1-sample.txt").unwrap(), 142);
+        assert_eq!(_part_1("input/roar/q1-p1-sample.txt").unwrap(), 142);
     }
 
     #[test]
     fn test_part_1() {
-        assert_eq!(_part_1("input/rtob/q1-p1-input.txt").unwrap(), 54968);
+        assert_eq!(_part_1("input/roar/q1-p1-input.txt").unwrap(), 54968);
     }
 
     #[test]
     fn test_part_2_sample() {
-        assert_eq!(_part_2("input/rtob/q1-p2-sample.txt").unwrap(), 281);
+        assert_eq!(_part_2("input/roar/q1-p2-sample.txt").unwrap(), 281);
     }
 
     #[test]
     fn test_part_2() {
-        assert_eq!(_part_2("input/rtob/q1-p2-input.txt").unwrap(), 54094);
+        assert_eq!(_part_2("input/roar/q1-p2-input.txt").unwrap(), 54094);
     }
 }

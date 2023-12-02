@@ -1,4 +1,4 @@
-use crate::gee::parser::FileLines;
+use crate::utils::parser::FileLines;
 
 fn _part_1(input: &str) -> std::io::Result<u32> {
     let lines = FileLines::new(input)?;

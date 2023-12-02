@@ -1,7 +1,7 @@
-use crate::gee::parser::FileLines;
+use crate::utils::parser::FileLines;
 
 struct Input {
-    _value: u32
+    _value: u32,
 }
 
 impl TryFrom<FileLines> for Input {
@@ -26,9 +26,9 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
 mod tests {
     use super::{_part_1, _part_2};
 
-    const INPUT: &str = "input/rtob//q02_p1_input.txt}";
-    const FIRST_INPUT_SAMPLE: &str = "input/rtob//q02_p1_sample.txt";
-    const SECOND_INPUT_SAMPLE: &str = "input/rtob//q02_p2_sample.txt";
+    const INPUT: &str = "input/roar/q02_input.txt";
+    const FIRST_INPUT_SAMPLE: &str = "input/roar/q02_p1_sample.txt";
+    const SECOND_INPUT_SAMPLE: &str = "input/roar/q02_p2_sample.txt";
 
     #[test]
     fn q02_part_1_sample() {
