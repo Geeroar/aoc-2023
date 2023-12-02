@@ -13,13 +13,11 @@ DAY=$2
 BASE_SRC_PATH="src/${MASTER_PROGRAMMER}"
 BASE_INPUT_PATH="input/${MASTER_PROGRAMMER}"
 
-SAMPLE_1="${BASE_INPUT_PATH}/q${DAY}_p1_sample.txt"
-SAMPLE_2="${BASE_INPUT_PATH}/q${DAY}_p2_sample.txt"
+SAMPLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_sample.txt"
 PUZZLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_input.txt"
 
 echo "Setting up input files at ${BASE_INPUT_PATH}/ ..."
-touch $SAMPLE_1
-touch $SAMPLE_2
+touch $SAMPLE_INPUT
 touch $PUZZLE_INPUT
 
 echo "Writing output to ${BASE_SRC_PATH}/q${DAY}.rs ..."
@@ -53,29 +51,28 @@ mod tests {
     use super::{_part_1, _part_2};
 
     const INPUT: &str = "${PUZZLE_INPUT}";
-    const FIRST_INPUT_SAMPLE: &str = "${SAMPLE_1}";
-    const SECOND_INPUT_SAMPLE: &str = "${SAMPLE_2}";
+    const INPUT_SAMPLE: &str = "${SAMPLE_INPUT}";
 
     #[test]
-    fn q${DAY}_part_1_sample() {
-        let result = _part_1(FIRST_INPUT_SAMPLE);
+    fn ${MASTER_PROGRAMMER}_q${DAY}_p1_sample() {
+        let result = _part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q${DAY}_part_1_main() {
+    fn ${MASTER_PROGRAMMER}_q${DAY}_p1_main() {
         let result = _part_1(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q${DAY}_part_2_sample() {
-        let result = _part_2(SECOND_INPUT_SAMPLE);
+    fn ${MASTER_PROGRAMMER}_q${DAY}_p2_sample() {
+        let result = _part_2(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q${DAY}_part_2_main() {
+    fn ${MASTER_PROGRAMMER}_q${DAY}_p2_main() {
         let result = _part_2(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
@@ -83,6 +80,6 @@ mod tests {
 EOF
 
 echo "Updating ${BASE_SRC_PATH}/mod.rs ..."
-echo "pub mod q${DAY};" >>src/${MASTER_PROGRAMMER}.rs
+echo "mod q${DAY};" >> ${BASE_SRC_PATH}/mod.rs
 
 echo "Done!"

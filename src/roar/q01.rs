@@ -106,22 +106,22 @@ mod tests {
     use super::{_part_1, _part_2};
 
     #[test]
-    fn test_part_1_sample() {
+    fn roar_q01_p1_sample() {
         assert_eq!(_part_1("input/roar/q1-p1-sample.txt").unwrap(), 142);
     }
 
     #[test]
-    fn test_part_1() {
+    fn roar_q01_p1_main() {
         assert_eq!(_part_1("input/roar/q1-p1-input.txt").unwrap(), 54968);
     }
 
     #[test]
-    fn test_part_2_sample() {
+    fn roar_q01_p2_sample() {
         assert_eq!(_part_2("input/roar/q1-p2-sample.txt").unwrap(), 281);
     }
 
     #[test]
-    fn test_part_2() {
+    fn roar_q01_p2_main() {
         assert_eq!(_part_2("input/roar/q1-p2-input.txt").unwrap(), 54094);
     }
 }

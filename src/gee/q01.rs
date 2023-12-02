@@ -56,30 +56,30 @@ fn _match_indexes(s: &str) -> Vec<(usize, u32)> {
 mod tests {
     use super::{_part_1, _part_2};
 
-    const INPUT: &str = "input/gee/input01.txt";
-    const INPUT_SAMPLE: &str = "input/gee/input01_sample.txt";
-    const INPUT_SAMPLE2: &str = "input/gee/input01_sample2.txt";
+    const INPUT: &str = "input/gee/q01_input.txt";
+    const INPUT_SAMPLE: &str = "input/gee/q01_sample.txt";
+    const INPUT_SAMPLE2: &str = "input/gee/q01_sample2.txt";
 
     #[test]
-    fn q01_part_1_sample() {
+    fn gee_q01_p1_sample() {
         let result = _part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 142);
     }
 
     #[test]
-    fn q01_part_1_main() {
+    fn gee_q01_p1_main() {
         let result = _part_1(INPUT);
         assert_eq!(result.unwrap(), 57346);
     }
 
     #[test]
-    fn q01_part_2_sample() {
+    fn gee_q01_p2_sample() {
         let result = _part_2(INPUT_SAMPLE2);
         assert_eq!(result.unwrap(), 281);
     }
 
     #[test]
-    fn q01_part_2_main() {
+    fn gee_q01_p2_main() {
         let result = _part_2(INPUT);
         assert_eq!(result.unwrap(), 57345);
     }
