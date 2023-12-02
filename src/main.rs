@@ -1,4 +1,6 @@
+mod utils;
 mod gee;
+mod roar;
 
 use ferris_says::say;
 use std::io::{stdout, BufWriter};

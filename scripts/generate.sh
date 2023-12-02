@@ -1,17 +1,29 @@
 #!/bin/bash
 
-BASE_PATH=src/gee/
-
-if [[ ! "$1" =~ ^[0-9][0-9]$ ]]; then
-    echo >&2 "Usage: $0 [ 01 | .. | 25 ]"
+if [[ -z "$1" ]] || [[ ! "$2" =~ ^[0-9][0-9]$ ]]; then
+    echo >&2 "Usage: $0 [ gee | roar ] [ 01 | .. | 25 ]"
     echo >&2
-    echo >&2 "Create skeleton file from template in ${BASE_PATH}q<xx>.rs"
+    echo >&2 "Create skeleton file from template in src/<xxxx>/q<xx>.rs"
     exit
 fi
 
-echo "Writing output to ${BASE_PATH}q$1.rs ..."
-cat > "${BASE_PATH}q$1.rs" <<EOF
-use crate::gee::parser::FileLines;
+DAY=$2
+
+BASE_SRC_PATH="src/${1}/"
+BASE_INPUT_PATH="input/${1}/"
+
+SAMPLE_1="${BASE_INPUT_PATH}/q${DAY}_p1_sample.txt"
+SAMPLE_2="${BASE_INPUT_PATH}/q${DAY}_p2_sample.txt"
+PUZZLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_p1_input.txt"
+
+echo "Setting up input files at ${BASE_INPUT_PATH} ..."
+touch $SAMPLE_1
+touch $SAMPLE_2
+touch $PUZZLE_INPUT
+
+echo "Writing output to ${BASE_SRC_PATH}q${DAY}.rs ..."
+cat >"${BASE_SRC_PATH}q${DAY}.rs" <<EOF
+use crate::utils::parser::FileLines;
 
 struct Input {
     _value: u32
@@ -39,29 +51,30 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
 mod tests {
     use super::{_part_1, _part_2};
 
-    const INPUT: &str = "input/gee/input$1.txt";
-    const INPUT_SAMPLE: &str = "input/gee/input$1_sample.txt";
+    const INPUT: &str = "${PUZZLE_INPUT}}";
+    const FIRST_INPUT_SAMPLE: &str = "${SAMPLE_1}";
+    const SECOND_INPUT_SAMPLE: &str = "${SAMPLE_2}";
 
     #[test]
-    fn q$1_part_1_sample() {
-        let result = _part_1(INPUT_SAMPLE);
+    fn q${DAY}_part_1_sample() {
+        let result = _part_1(FIRST_INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q$1_part_1_main() {
+    fn q${DAY}_part_1_main() {
         let result = _part_1(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q$1_part_2_sample() {
-        let result = _part_2(INPUT_SAMPLE);
+    fn q${DAY}_part_2_sample() {
+        let result = _part_2(SECOND_INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
-    fn q$1_part_2_main() {
+    fn q${DAY}_part_2_main() {
         let result = _part_2(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
