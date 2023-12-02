@@ -7,10 +7,11 @@ if [[ -z "$1" ]] || [[ ! "$2" =~ ^[0-9][0-9]$ ]]; then
     exit
 fi
 
+MASTER_PROGRAMMER=$1
 DAY=$2
 
-BASE_SRC_PATH="src/${1}"
-BASE_INPUT_PATH="input/${1}"
+BASE_SRC_PATH="src/${MASTER_PROGRAMMER}"
+BASE_INPUT_PATH="input/${MASTER_PROGRAMMER}"
 
 SAMPLE_1="${BASE_INPUT_PATH}/q${DAY}_p1_sample.txt"
 SAMPLE_2="${BASE_INPUT_PATH}/q${DAY}_p2_sample.txt"
@@ -81,6 +82,7 @@ mod tests {
 }
 EOF
 
-echo "pub mod q${DAY};" >>${BASE_SRC_PATH}/mod.rs
+echo "Updating ${BASE_SRC_PATH}/mod.rs ..."
+echo "pub mod q${DAY};" >>src/${MASTER_PROGRAMMER}.rs
 
 echo "Done!"
