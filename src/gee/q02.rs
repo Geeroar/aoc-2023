@@ -67,7 +67,11 @@ fn _min_cubes(game: &Game) -> CubeSet {
         _green = std::cmp::max(view._green, _green);
         _blue = std::cmp::max(view._blue, _blue);
     }
-    CubeSet { _red, _green, _blue, }
+    CubeSet {
+        _red,
+        _green,
+        _blue,
+    }
 }
 
 fn _power(cube_set: &CubeSet) -> u32 {
