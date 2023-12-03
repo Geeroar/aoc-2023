@@ -17,8 +17,8 @@ SAMPLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_sample.txt"
 PUZZLE_INPUT="${BASE_INPUT_PATH}/q${DAY}_input.txt"
 
 echo "Setting up input files at ${BASE_INPUT_PATH}/ ..."
-touch $SAMPLE_INPUT
-touch $PUZZLE_INPUT
+touch "$SAMPLE_INPUT"
+touch "$PUZZLE_INPUT"
 
 echo "Writing output to ${BASE_SRC_PATH}/q${DAY}.rs ..."
 cat >"${BASE_SRC_PATH}/q${DAY}.rs" <<EOF
@@ -80,6 +80,6 @@ mod tests {
 EOF
 
 echo "Updating ${BASE_SRC_PATH}/mod.rs ..."
-echo "mod q${DAY};" >> ${BASE_SRC_PATH}/mod.rs
+echo "mod q${DAY};" >> "${BASE_SRC_PATH}/mod.rs"
 
 echo "Done!"
