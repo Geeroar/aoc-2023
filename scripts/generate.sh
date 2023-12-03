@@ -38,12 +38,12 @@ impl TryFrom<FileLines> for Input {
 
 fn _part_1(input: &str) -> std::io::Result<u32> {
     let input = Input::try_from(FileLines::new(input)?)?;
-    Ok(input._value)
+    Ok(0)
 }
 
 fn _part_2(input: &str) -> std::io::Result<u32> {
     let input = Input::try_from(FileLines::new(input)?)?;
-    Ok(input._value)
+    Ok(0)
 }
 
 #[cfg(test)]
