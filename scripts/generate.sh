@@ -36,13 +36,13 @@ impl TryFrom<FileLines> for Input {
     }
 }
 
-fn _part_1(input: &str) -> std::io::Result<u32> {
-    let input = Input::try_from(FileLines::new(input)?)?;
+fn _part_1(input_file: &str) -> std::io::Result<u32> {
+    let input = Input::try_from(FileLines::new(input_file)?)?;
     Ok(0)
 }
 
-fn _part_2(input: &str) -> std::io::Result<u32> {
-    let input = Input::try_from(FileLines::new(input)?)?;
+fn _part_2(input_file: &str) -> std::io::Result<u32> {
+    let input = Input::try_from(FileLines::new(input_file)?)?;
     Ok(0)
 }
 
