@@ -100,7 +100,7 @@ impl Location {
         result
     }
 
-    fn _gear_ratio(&self, numbers: &Vec<(u32, Location)>) -> u32 {
+    fn _gear_ratio(&self, numbers: &[(u32, Location)]) -> u32 {
         let span = self._span();
         let results: Vec<&(u32, Location)> =
             numbers.iter().filter(|n| n.1._overlaps(&span)).collect();
