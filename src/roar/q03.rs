@@ -1,8 +1,4 @@
 use crate::utils::parser::FileLines;
-use std::{
-    fs::File,
-    io::{self, BufRead},
-};
 
 struct Input {
     _value: u32,
@@ -26,11 +22,11 @@ fn _build_schematic(input_file: &str) -> std::io::Result<Vec<Vec<char>>> {
         matrix.push(row);
     }
 
-    return Ok(matrix);
+    Ok(matrix)
 }
 
 fn _char_is_symbol(c: char) -> bool {
-    return !c.is_alphanumeric() && c != '.';
+    !c.is_alphanumeric() && c != '.'
 }
 
 fn _check_number_has_adjacent_symbol(
@@ -50,18 +46,18 @@ fn _check_number_has_adjacent_symbol(
     } else {
         col
     };
-    for i in start_row..end_row + 1 {
-        for j in start_col..end_col + 1 {
+    for (i, row_chars) in schematic_matrix.iter().enumerate().take(end_row + 1).skip(start_row) {
+        for (j, current_char) in row_chars.iter().enumerate().take(end_col + 1).skip(start_col) {
             if i == row && j == col {
                 continue;
             }
 
-            if _char_is_symbol(schematic_matrix[i][j]) {
+            if _char_is_symbol(*current_char) {
                 return true;
             }
         }
     }
-    return false;
+    false
 }
 
 fn _parse_number_at_index(row: &Vec<char>, col: usize) -> u32 {
@@ -76,7 +72,7 @@ fn _parse_number_at_index(row: &Vec<char>, col: usize) -> u32 {
         number_str.push(row[i + 1]);
         i += 1;
     }
-    return number_str.parse::<u32>().unwrap();
+    number_str.parse::<u32>().unwrap()
 }
 
 fn _part_1(input_file: &str) -> std::io::Result<u32> {
@@ -94,15 +90,12 @@ fn _part_1(input_file: &str) -> std::io::Result<u32> {
                 }
             }
 
-            if !col.is_numeric() || col_index == row.len() - 1 {
-                if !number_str.is_empty() {
-                    println!("{}: {}", number_str, number_is_valid);
-                    if number_is_valid {
-                        result += number_str.parse::<u32>().unwrap();
-                        number_is_valid = false;
-                    }
-                    number_str.clear();
+            if !col.is_numeric() || col_index == row.len() - 1 && !number_str.is_empty() {
+                if number_is_valid {
+                    result += number_str.parse::<u32>().unwrap();
+                    number_is_valid = false;
                 }
+                number_str.clear();
             }
         }
     }
@@ -114,7 +107,7 @@ fn _part_2(input_file: &str) -> std::io::Result<u32> {
     let mut result: u32 = 0;
 
     for (row_index, row) in schematic.iter().enumerate() {
-        for (col_index, col) in row.iter().enumerate() {
+        for (col_index, _) in row.iter().enumerate() {
             if schematic[row_index][col_index] == '*' {
                 let mut joined_numbers: Vec<u32> = Vec::new();
                 // scan above

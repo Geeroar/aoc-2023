@@ -4,10 +4,6 @@ struct Input {
     _value: u32,
 }
 
-const MAX_RED_CUBES: u32 = 12;
-const MAX_GREEN_CUBES: u32 = 13;
-const MAX_BLUE_CUBES: u32 = 14;
-
 impl TryFrom<FileLines> for Input {
     type Error = std::io::Error;
 
@@ -17,6 +13,9 @@ impl TryFrom<FileLines> for Input {
 }
 
 fn _part_1(input: &str) -> std::io::Result<u32> {
+    let max_red_cubes: u32 = 12;
+    let max_green_cubes: u32 = 13;
+    let max_blue_cubes: u32 = 14;
     let lines = FileLines::new(input)?;
     let mut result: u32 = 0;
     for line in lines {
@@ -37,17 +36,17 @@ fn _part_1(input: &str) -> std::io::Result<u32> {
                 let game_cube_color = game_cube_parts[1];
                 match game_cube_color {
                     "red" => {
-                        if game_cube_count > MAX_RED_CUBES {
+                        if game_cube_count > max_red_cubes {
                             game_is_possible = false;
                         }
                     }
                     "green" => {
-                        if game_cube_count > MAX_GREEN_CUBES {
+                        if game_cube_count > max_green_cubes {
                             game_is_possible = false;
                         }
                     }
                     "blue" => {
-                        if game_cube_count > MAX_BLUE_CUBES {
+                        if game_cube_count > max_blue_cubes {
                             game_is_possible = false;
                         }
                     }
@@ -101,7 +100,7 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
                 }
             }
         }
-        result += (min_blue * min_green * min_red);
+        result += min_blue * min_green * min_red;
     }
     Ok(result)
 }
