@@ -19,7 +19,6 @@ fn _part_1(input_file: &str) -> std::io::Result<u32> {
     let mut result: u32 = 0;
     for line in lines {
         let parts: Vec<&str> = line.split(':').collect();
-        let card_num: i32 = parts[0].split_whitespace().last().unwrap().parse().unwrap();
         let numbers_parts: Vec<&str> = parts[1].split('|').collect();
 
         let winning_numbers: Vec<i32> = numbers_parts[0]

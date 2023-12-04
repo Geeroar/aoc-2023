@@ -101,7 +101,7 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
                 }
             }
         }
-        result += (min_blue * min_green * min_red);
+        result += min_blue * min_green * min_red;
     }
     Ok(result)
 }
