@@ -40,7 +40,7 @@ fn _part_1(input_file: &str) -> std::io::Result<u32> {
                 if score == 0 {
                     score = 1;
                 } else {
-                    score = score * 2;
+                    score *= 2;
                 }
             }
         }

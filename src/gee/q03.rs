@@ -27,13 +27,13 @@ impl TryFrom<FileLines> for Input {
             for (j, c) in line.chars().enumerate() {
                 match c {
                     '0'..='9' => {
-                        if current_number == "" {
+                        if current_number.is_empty() {
                             number_start = j;
                         }
                         current_number.push(c);
                     }
                     _ => {
-                        if current_number != "" {
+                        if !current_number.is_empty() {
                             let location = Location {
                                 _line: i,
                                 _start: number_start,
@@ -52,7 +52,7 @@ impl TryFrom<FileLines> for Input {
                     }
                 }
             }
-            if current_number != "" {
+            if !current_number.is_empty() {
                 let location = Location {
                     _line: i,
                     _start: number_start,

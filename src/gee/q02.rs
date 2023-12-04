@@ -98,7 +98,7 @@ fn _part_2(input: &str) -> std::io::Result<u32> {
     Ok(input
         ._games
         .iter()
-        .map(|g| _min_cubes(g))
+        .map(_min_cubes)
         .map(|c| _power(&c))
         .sum())
 }

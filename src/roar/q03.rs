@@ -46,13 +46,13 @@ fn _check_number_has_adjacent_symbol(
     } else {
         col
     };
-    for i in start_row..end_row + 1 {
+    for (i, row_chars) in schematic_matrix.iter().enumerate().take(end_row + 1).skip(start_row) {
         for j in start_col..end_col + 1 {
             if i == row && j == col {
                 continue;
             }
 
-            if _char_is_symbol(schematic_matrix[i][j]) {
+            if _char_is_symbol(row_chars[j]) {
                 return true;
             }
         }
