@@ -47,12 +47,12 @@ fn _check_number_has_adjacent_symbol(
         col
     };
     for (i, row_chars) in schematic_matrix.iter().enumerate().take(end_row + 1).skip(start_row) {
-        for j in start_col..end_col + 1 {
+        for (j, current_char) in row_chars.iter().enumerate().take(end_col + 1).skip(start_col) {
             if i == row && j == col {
                 continue;
             }
 
-            if _char_is_symbol(row_chars[j]) {
+            if _char_is_symbol(*current_char) {
                 return true;
             }
         }
