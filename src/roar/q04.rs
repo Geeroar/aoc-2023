@@ -1,6 +1,6 @@
 use crate::utils::parser::FileLines;
-use std::collections::HashSet;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 struct Input {
     _value: u32,
@@ -22,8 +22,14 @@ fn _part_1(input_file: &str) -> std::io::Result<u32> {
         let card_num: i32 = parts[0].split_whitespace().last().unwrap().parse().unwrap();
         let numbers_parts: Vec<&str> = parts[1].split('|').collect();
 
-        let winning_numbers: Vec<i32> = numbers_parts[0].split_whitespace().map(|s| s.parse().unwrap()).collect();
-        let our_numbers: Vec<i32> = numbers_parts[1].split_whitespace().map(|s| s.parse().unwrap()).collect();
+        let winning_numbers: Vec<i32> = numbers_parts[0]
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
+        let our_numbers: Vec<i32> = numbers_parts[1]
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
 
         let mut winning_numbers_set: HashSet<i32> = HashSet::new();
         for num in &winning_numbers {
@@ -53,8 +59,14 @@ fn _part_2(input_file: &str) -> std::io::Result<u32> {
         *card_counts.entry(card_num).or_insert(0) += 1;
         let numbers_parts: Vec<&str> = parts[1].split('|').collect();
 
-        let winning_numbers: Vec<i32> = numbers_parts[0].split_whitespace().map(|s| s.parse().unwrap()).collect();
-        let our_numbers: Vec<i32> = numbers_parts[1].split_whitespace().map(|s| s.parse().unwrap()).collect();
+        let winning_numbers: Vec<i32> = numbers_parts[0]
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
+        let our_numbers: Vec<i32> = numbers_parts[1]
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
 
         let mut winning_numbers_set: HashSet<i32> = HashSet::new();
         for num in &winning_numbers {
@@ -93,7 +105,7 @@ mod tests {
     #[test]
     fn roar_q04_p1_main() {
         let result = _part_1(INPUT);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 32001);
     }
 
     #[test]
@@ -105,6 +117,6 @@ mod tests {
     #[test]
     fn roar_q04_p2_main() {
         let result = _part_2(INPUT);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 5037841);
     }
 }
