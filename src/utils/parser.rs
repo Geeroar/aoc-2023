@@ -35,10 +35,7 @@ pub struct FileInput<T, U> {
 
 impl<T, U> FileInput<T, U> {
     fn new(source: T) -> io::Result<Self> {
-        Ok(Self {
-            source,
-            _dud: None,
-        })
+        Ok(Self { source, _dud: None })
     }
 }
 
