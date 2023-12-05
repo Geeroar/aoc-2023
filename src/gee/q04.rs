@@ -21,8 +21,7 @@ impl TryFrom<FileLines> for Input {
                 let (win, have) = line.split_once(": ").unwrap().1.split_once(" | ").unwrap();
                 Card {
                     _winning: HashSet::from_iter(
-                        win.split_whitespace()
-                            .map(|s| s.parse::<u32>().unwrap()),
+                        win.split_whitespace().map(|s| s.parse::<u32>().unwrap()),
                     ),
                     _numbers: have
                         .split_whitespace()
