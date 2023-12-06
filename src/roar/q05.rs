@@ -161,8 +161,10 @@ fn _part_2(input_file: &str) -> std::io::Result<u64> {
                     }
                     if interval.1 > interval.0 {
                         // Basically do _calculate_destination on each side of interval
-                        transformed_ranges
-                            .push((destination + (interval.0 - source_start), destination + (interval.1 - source_start)));
+                        transformed_ranges.push((
+                            destination + (interval.0 - source_start),
+                            destination + (interval.1 - source_start),
+                        ));
                     }
                 }
                 // Update ranges on each line of the conversion map, e.g. for soil-to-fertilizer and so on
