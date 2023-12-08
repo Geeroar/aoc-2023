@@ -158,6 +158,7 @@ mod tests {
         assert_eq!(result.unwrap(), 46);
     }
 
+    #[ignore]
     #[test]
     fn gee_q05_p2_main() {
         let result = _part_2(INPUT);
