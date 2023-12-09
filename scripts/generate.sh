@@ -22,58 +22,60 @@ touch "$PUZZLE_INPUT"
 
 echo "Writing output to ${BASE_SRC_PATH}/q${DAY}.rs ..."
 cat >"${BASE_SRC_PATH}/q${DAY}.rs" <<EOF
-use crate::utils::parser::FileLines;
+#![allow(dead_code, unused_variables)]
+
+use crate::utils::parser::{parse, FileLines};
 
 struct Input {
-    _value: u32
+    value: u32
 }
 
 impl TryFrom<FileLines> for Input {
     type Error = std::io::Error;
 
-    fn try_from(_lines: FileLines) -> Result<Self, Self::Error> {
-        Ok(Input { _value: 0 })
+    fn try_from(lines: FileLines) -> Result<Self, Self::Error> {
+        Ok(Input { value: 0 })
     }
 }
 
-fn _part_1(input_file: &str) -> std::io::Result<u32> {
-    let input = Input::try_from(FileLines::new(input_file)?)?;
+fn part_1(input_file: &str) -> std::io::Result<u32> {
+    let input = parse::<Input>(input_file)?;
     Ok(0)
 }
 
-fn _part_2(input_file: &str) -> std::io::Result<u32> {
-    let input = Input::try_from(FileLines::new(input_file)?)?;
+fn part_2(input_file: &str) -> std::io::Result<u32> {
+    let input = parse::<Input>(input_file)?;
     Ok(0)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{_part_1, _part_2};
+    use super::{part_1, part_2};
 
     const INPUT: &str = "${PUZZLE_INPUT}";
     const INPUT_SAMPLE: &str = "${SAMPLE_INPUT}";
 
     #[test]
     fn ${MASTER_PROGRAMMER}_q${DAY}_p1_sample() {
-        let result = _part_1(INPUT_SAMPLE);
+        let result = part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
     fn ${MASTER_PROGRAMMER}_q${DAY}_p1_main() {
-        let result = _part_1(INPUT);
+        let result = part_1(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
     fn ${MASTER_PROGRAMMER}_q${DAY}_p2_sample() {
-        let result = _part_2(INPUT_SAMPLE);
+        let result = part_2(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 0);
     }
 
     #[test]
     fn ${MASTER_PROGRAMMER}_q${DAY}_p2_main() {
-        let result = _part_2(INPUT);
+        let result = part_2(INPUT);
         assert_eq!(result.unwrap(), 0);
     }
 }
