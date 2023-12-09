@@ -46,7 +46,13 @@ impl TryFrom<FileLines> for Input {
     }
 }
 
-fn _get_steps_betwixt_nodes(directions: &Vec<char> , network: &HashMap<String, (String, String)>, start: &str, end: &str, ends_with_z_check: bool) -> u64 {
+fn _get_steps_betwixt_nodes(
+    directions: &Vec<char>,
+    network: &HashMap<String, (String, String)>,
+    start: &str,
+    end: &str,
+    ends_with_z_check: bool,
+) -> u64 {
     let mut current = start;
     let mut steps = 0;
     let mut direction_index = 0;
@@ -64,7 +70,11 @@ fn _get_steps_betwixt_nodes(directions: &Vec<char> , network: &HashMap<String, (
         } else if direction == 'R' {
             current = &network[current].1;
         }
-        finish = if ends_with_z_check {current.ends_with('Z')} else {current == end}
+        finish = if ends_with_z_check {
+            current.ends_with('Z')
+        } else {
+            current == end
+        }
     }
     steps
 }
@@ -73,7 +83,13 @@ fn _part_1(input_file: &str) -> std::io::Result<u64> {
     let input = Input::try_from(FileLines::new(input_file)?)?;
     let start = "AAA";
     let end = "ZZZ";
-    Ok(_get_steps_betwixt_nodes(&input._directions, &input._network, start, end, false))
+    Ok(_get_steps_betwixt_nodes(
+        &input._directions,
+        &input._network,
+        start,
+        end,
+        false,
+    ))
 }
 
 // This was my first, terrible idea
@@ -117,18 +133,26 @@ fn _part_2(input_file: &str) -> std::io::Result<u64> {
 
     println!("{:?}", input._ends_with_a);
     println!("{:?}", input._ends_with_z);
-    let steps_counts: Vec<Vec<u64>>  = input._ends_with_a
+    let steps_counts: Vec<Vec<u64>> = input
+        ._ends_with_a
         .iter()
         .map(|node| {
             let current_node = node.clone();
             let mut current_steps = Vec::new();
             for end_node in input._ends_with_z.iter() {
-                let steps = _get_steps_betwixt_nodes(directions, &input._network, &current_node, end_node, true);
+                let steps = _get_steps_betwixt_nodes(
+                    directions,
+                    &input._network,
+                    &current_node,
+                    end_node,
+                    true,
+                );
                 current_steps.push(steps);
             }
 
             current_steps
-        }).collect();
+        })
+        .collect();
 
     println!("{:?}", steps_counts);
 
