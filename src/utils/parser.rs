@@ -8,6 +8,13 @@ pub fn error<T>(message: &str) -> io::Result<T> {
     Err(io::Error::new(io::ErrorKind::Other, message))
 }
 
+pub fn parse<'a, T>(input: &str) -> io::Result<T>
+where
+    T: TryFrom<FileLines, Error = io::Error>,
+{
+    T::try_from(FileLines::new(input)?)
+}
+
 pub fn parse_lines<'a, T>(input: &str) -> io::Result<FileInput<FileLines, T>> {
     FileInput::new(FileLines::new(input)?)
 }
