@@ -39,12 +39,12 @@ impl TryFrom<FileLines> for Input {
 }
 
 fn part_1(input_file: &str) -> std::io::Result<u32> {
-    let input = parse::<Input>(input_file)?;
+    let input: Input = parse(input_file)?;
     Ok(0)
 }
 
 fn part_2(input_file: &str) -> std::io::Result<u32> {
-    let input = parse::<Input>(input_file)?;
+    let input: Input = parse(input_file)?;
     Ok(0)
 }
 
