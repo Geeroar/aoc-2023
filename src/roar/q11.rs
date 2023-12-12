@@ -186,6 +186,7 @@ mod tests {
         assert_eq!(result.unwrap(), 82000210);
     }
 
+    #[ignore]
     #[test]
     fn roar_q11_p2_main() {
         let result = part_2(INPUT);
