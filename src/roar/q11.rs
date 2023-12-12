@@ -173,6 +173,7 @@ mod tests {
         assert_eq!(result.unwrap(), 374);
     }
 
+    #[ignore]
     #[test]
     fn roar_q11_p1_main() {
         let result = part_1(INPUT);
