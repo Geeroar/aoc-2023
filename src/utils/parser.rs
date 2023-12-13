@@ -8,18 +8,18 @@ pub fn error<T>(message: &str) -> io::Result<T> {
     Err(io::Error::new(io::ErrorKind::Other, message))
 }
 
-pub fn parse<'a, T>(input: &str) -> io::Result<T>
+pub fn parse<T>(input: &str) -> io::Result<T>
 where
     T: TryFrom<FileLines, Error = io::Error>,
 {
     T::try_from(FileLines::new(input)?)
 }
 
-pub fn parse_lines<'a, T>(input: &str) -> io::Result<FileInput<FileLines, T>> {
+pub fn parse_lines<T>(input: &str) -> io::Result<FileInput<FileLines, T>> {
     FileInput::new(FileLines::new(input)?)
 }
 
-pub fn parse_bytes<'a, T>(input: &str, split: &u8) -> io::Result<FileInput<FileSplit, T>> {
+pub fn parse_bytes<T>(input: &str, split: &u8) -> io::Result<FileInput<FileSplit, T>> {
     FileInput::new(FileSplit::new(input, split)?)
 }
 

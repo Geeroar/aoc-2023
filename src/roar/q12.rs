@@ -55,7 +55,7 @@ impl TryFrom<FileLines> for Input {
     }
 }
 
-fn is_valid_condition_record(record: Vec<Condition>, mapping: &Vec<u32>) -> bool {
+fn is_valid_condition_record(record: Vec<Condition>, mapping: &[u32]) -> bool {
     /*
     Check that the record is valid
     A valid record is a sequence of operational and damaged conditions
@@ -100,27 +100,19 @@ fn count_possible_arrangements_for_row(
     */
     if record.len() as u32 == start {
         // If this mapping to record is valid, this means there's one more possible arrangement
-        return if is_valid_condition_record(record, mapping) {
-            1
-        } else {
-            0
-        };
+        return u32::from(is_valid_condition_record(record, mapping));
     }
     if record[start as usize] == Condition::Unknown {
         // Build a new record trying out broken in place of unknown
         let mut new_record_with_broken = record.clone();
         new_record_with_broken[start as usize] = Condition::Damaged;
         // Similarly, build a new record trying out operational in place of unknown
-        let mut new_record_with_operational = record.clone();
+        let mut new_record_with_operational = record;
         new_record_with_operational[start as usize] = Condition::Operational;
-        return count_possible_arrangements_for_row(new_record_with_broken, &mapping, start + 1)
-            + count_possible_arrangements_for_row(
-                new_record_with_operational,
-                &mapping,
-                start + 1,
-            );
+        return count_possible_arrangements_for_row(new_record_with_broken, mapping, start + 1)
+            + count_possible_arrangements_for_row(new_record_with_operational, mapping, start + 1);
     }
-    return count_possible_arrangements_for_row(record, mapping, start + 1);
+    count_possible_arrangements_for_row(record, mapping, start + 1)
 }
 
 fn cound_possible_arrangements(records: Vec<Vec<Condition>>, mappings: Vec<Vec<u32>>) -> u32 {

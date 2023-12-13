@@ -46,7 +46,7 @@ impl History {
     }
 
     fn build_levels(&self) -> Vec<Vec<i32>> {
-        let mut levels: Vec<Vec<i32>> = vec![self.sequence.iter().map(|&i| i).collect()];
+        let mut levels: Vec<Vec<i32>> = vec![self.sequence.to_vec()];
         let mut size = levels[0].len();
         while levels.last().unwrap().iter().any(|&n| n != 0) {
             let mut next_level: Vec<i32> = Vec::new();

@@ -74,7 +74,7 @@ pub fn _part_2(input_file: &str) -> std::io::Result<u64> {
     let mut steps = 0;
     let mut i = 0;
     let (instructions, nodes) = (input._instructions, input._nodes);
-    let mut current_nodes: Vec<(&str, &str, Vec<(&str, u64)>)> = nodes
+    let mut current_nodes: Vec<(&str, &str, Vec<_>)> = nodes
         .keys()
         .filter(|s| s.ends_with('A'))
         .map(|s| (s.as_str(), s.as_str(), vec![("", 0)]))
@@ -113,7 +113,7 @@ pub fn _part_2(input_file: &str) -> std::io::Result<u64> {
         }
     }
     steps = 0;
-    let cycle_sizes: Vec<u64> = cycles.values().map(|&x| x).collect();
+    let cycle_sizes: Vec<u64> = cycles.values().copied().collect();
     let largest_jump = cycle_sizes.iter().max().unwrap();
     loop {
         steps += largest_jump;

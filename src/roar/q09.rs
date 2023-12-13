@@ -41,7 +41,7 @@ fn _build_diffs_sequence(sequence: Vec<i64>) -> Vec<Vec<i64>> {
         }
     }
 
-    return all_diffs;
+    all_diffs
 }
 
 fn _build_predictions(histories: Vec<Vec<i64>>) -> (i64, i64) {

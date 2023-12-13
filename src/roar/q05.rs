@@ -85,7 +85,7 @@ fn _calculate_destination(seed: u64, start: u64, destination: u64, range: u64) -
     if seed >= start && seed < start + range {
         return destination + (seed - start);
     }
-    return seed;
+    seed
 }
 
 fn _part_1(input_file: &str) -> std::io::Result<u64> {
@@ -114,7 +114,7 @@ fn _part_1(input_file: &str) -> std::io::Result<u64> {
             }
         }
     }
-    Ok(locations.iter().min().unwrap().clone())
+    Ok(*locations.iter().min().unwrap())
 }
 
 fn _build_maps(almanac: &SeedAlmanac) -> Vec<&Vec<ConversionMap>> {
@@ -124,7 +124,7 @@ fn _build_maps(almanac: &SeedAlmanac) -> Vec<&Vec<ConversionMap>> {
         let conversion_maps = almanac._mappings.get(step).unwrap();
         maps_list.push(conversion_maps);
     }
-    return maps_list;
+    maps_list
 }
 
 fn _part_2(input_file: &str) -> std::io::Result<u64> {
@@ -175,7 +175,7 @@ fn _part_2(input_file: &str) -> std::io::Result<u64> {
         }
         locations.push(ranges.iter().min().unwrap().0);
     }
-    Ok(locations.iter().min().unwrap().clone())
+    Ok(*locations.iter().min().unwrap())
 }
 
 #[cfg(test)]

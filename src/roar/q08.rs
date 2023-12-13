@@ -24,10 +24,10 @@ impl TryFrom<FileLines> for Input {
             } else if i > 1 {
                 let mut _line = line.split_once(" = ").unwrap();
                 let node_name = _line.0.to_string();
-                if node_name.ends_with("A") {
+                if node_name.ends_with('A') {
                     ends_with_a.push(node_name.clone());
                 }
-                if node_name.ends_with("Z") {
+                if node_name.ends_with('Z') {
                     ends_with_z.push(node_name.clone());
                 }
                 let value_brackets_removed = &_line.1[1.._line.1.len() - 1];
@@ -109,16 +109,15 @@ fn _part_2_bad(input_file: &str) -> std::io::Result<u64> {
         steps += 1;
 
         all_nodes_end_with_z = true;
-        for i in 0..current_nodes.len() {
-            let node_name = &current_nodes[i];
+        for node_name in &mut current_nodes {
             let node = &input._network[node_name];
             if direction == 'L' {
-                current_nodes[i] = node.0.clone();
+                *node_name = node.0.clone();
             } else if direction == 'R' {
-                current_nodes[i] = node.1.clone();
+                *node_name = node.1.clone();
             }
 
-            if !current_nodes[i].ends_with("Z") {
+            if !node_name.ends_with('Z') {
                 all_nodes_end_with_z = false;
             }
         }
