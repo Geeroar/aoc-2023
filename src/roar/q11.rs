@@ -104,8 +104,10 @@ fn calculate_shortest_path(grid: &Vec<Vec<Tile>>, start: Point, end: Point) -> i
         for (dx, dy) in directions.iter() {
             let x = current.0 + dx;
             let y = current.1 + dy;
-            if x >= 0 && x < grid[0].len() as i64
-                && y >= 0 && y < grid.len() as i64
+            if x >= 0
+                && x < grid[0].len() as i64
+                && y >= 0
+                && y < grid.len() as i64
                 && !visited[y as usize][x as usize]
             {
                 // Using weight as distance
@@ -127,7 +129,8 @@ fn get_distance_betwixt_galaxies(grid: &Vec<Vec<Tile>>, expansion_magnitude: u32
     for (i, galaxy) in galaxies.iter().enumerate() {
         for other_galaxy in galaxies.iter().skip(i + 1) {
             if seen.insert((galaxy, other_galaxy)) {
-                let dist = calculate_shortest_path(&expanded_grid, galaxy.location, other_galaxy.location);
+                let dist =
+                    calculate_shortest_path(&expanded_grid, galaxy.location, other_galaxy.location);
                 println!(
                     "Distance between {:?} and {:?} is {}",
                     galaxy, other_galaxy, dist
