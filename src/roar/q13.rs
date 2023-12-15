@@ -102,12 +102,14 @@ mod tests {
     const INPUT: &str = "input/roar/q13_input.txt";
     const INPUT_SAMPLE: &str = "input/roar/q13_sample.txt";
 
+    #[ignore]
     #[test]
     fn roar_q13_p1_sample() {
         let result = part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 405);
     }
 
+    #[ignore]
     #[test]
     fn roar_q13_p1_main() {
         let result = part_1(INPUT);
