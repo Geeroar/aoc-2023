@@ -20,23 +20,23 @@ fn _rank_card(card: char, jokers_wild: bool) -> u32 {
         ('2', if jokers_wild { 2 } else { 1 }),
     ]);
 
-    return card_ranks.get(&card).unwrap().clone();
+    *card_ranks.get(&card).unwrap()
 }
 
-fn _compare_hands_by_cards(hand1: &String, hand2: &String, jokers_wild: bool) -> Ordering {
+fn _compare_hands_by_cards(hand1: &str, hand2: &str, jokers_wild: bool) -> Ordering {
     let hand1_cards: Vec<char> = hand1.chars().collect();
     let hand2_cards: Vec<char> = hand2.chars().collect();
     for (i, card) in hand1_cards.iter().enumerate() {
-        if _rank_card(*card, jokers_wild) > _rank_card(hand2_cards[i], jokers_wild) {
-            return Ordering::Greater;
-        } else if _rank_card(*card, jokers_wild) < _rank_card(hand2_cards[i], jokers_wild) {
-            return Ordering::Less;
+        match _rank_card(*card, jokers_wild).cmp(&_rank_card(hand2_cards[i], jokers_wild)) {
+            Ordering::Greater => return Ordering::Greater,
+            Ordering::Less => return Ordering::Less,
+            _ => (),
         }
     }
-    return Ordering::Equal;
+    Ordering::Equal
 }
 
-fn _rank_hand(hand: &String, jokers_wild: bool) -> u32 {
+fn _rank_hand(hand: &str, jokers_wild: bool) -> u32 {
     const FIVE_OF_A_KIND: u32 = 7;
     const FOUR_OF_A_KIND: u32 = 6;
     const FULL_HOUSE: u32 = 5;
@@ -63,7 +63,7 @@ fn _rank_hand(hand: &String, jokers_wild: bool) -> u32 {
         5 => FIVE_OF_A_KIND, // Five of a kind with all jokers
         _ => {
             // Use jokers to form the best hand
-            let max_count = match values.get(0) {
+            let max_count = match values.first() {
                 Some(&x) => x + joker_count,
                 None => joker_count,
             };
@@ -122,7 +122,7 @@ impl TryFrom<FileLines> for Input {
     fn try_from(_lines: FileLines) -> Result<Self, Self::Error> {
         let mut hands_and_bids = Vec::new();
         for line in _lines {
-            let hand_and_bid = line.split_once(" ").unwrap();
+            let hand_and_bid = line.split_once(' ').unwrap();
             let hand = hand_and_bid.0;
             let bid = hand_and_bid.1.parse::<u32>().unwrap();
             let hand_and_bid = HandAndBid {
@@ -143,14 +143,14 @@ impl TryFrom<FileLines> for Input {
 }
 
 fn _get_total_winnings(ordered_hands_and_bids: BinaryHeap<HandAndBid>) -> u32 {
-    let mut ordered_hands_and_bids = ordered_hands_and_bids.clone();
+    let mut ordered_hands_and_bids = ordered_hands_and_bids;
     let mut rank = ordered_hands_and_bids.len();
     let mut total = 0;
     while let Some(hand_and_bid) = ordered_hands_and_bids.pop() {
         total += hand_and_bid.data.1 * rank as u32;
         rank -= 1;
     }
-    return total;
+    total
 }
 
 fn _part_1(input_file: &str) -> std::io::Result<u32> {

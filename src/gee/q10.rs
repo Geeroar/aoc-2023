@@ -245,10 +245,18 @@ impl Input {
     fn paths_from_start(&self) -> (Step, Step) {
         let (row, col) = self.start;
         let mut paths = Vec::new();
-        self.path_north(self.start).map(|p| paths.push(p));
-        self.path_south(self.start).map(|p| paths.push(p));
-        self.path_west(self.start).map(|p| paths.push(p));
-        self.path_east(self.start).map(|p| paths.push(p));
+        if let Some(p) = self.path_north(self.start) {
+            paths.push(p);
+        }
+        if let Some(p) = self.path_south(self.start) {
+            paths.push(p);
+        }
+        if let Some(p) = self.path_west(self.start) {
+            paths.push(p);
+        }
+        if let Some(p) = self.path_east(self.start) {
+            paths.push(p);
+        }
         (paths[0], paths[1])
     }
 

@@ -44,11 +44,11 @@ fn parse_grid(lines: FileLines) -> Vec<Vec<Tile>> {
         })
         .collect();
 
-    return grid;
+    grid
 }
 
 fn expand_grid(grid: Vec<Vec<Tile>>, expansion_magnitude: u32) -> Vec<Vec<Tile>> {
-    let mut expanded_grid: Vec<Vec<Tile>> = grid.clone();
+    let mut expanded_grid: Vec<Vec<Tile>> = grid;
 
     let mut rows_to_expand = vec![false; expanded_grid.len()];
     let mut cols_to_expand = vec![false; expanded_grid[0].len()];
@@ -69,10 +69,10 @@ fn expand_grid(grid: Vec<Vec<Tile>>, expansion_magnitude: u32) -> Vec<Vec<Tile>>
         }
     }
 
-    return expanded_grid;
+    expanded_grid
 }
 
-fn get_galaxies(grid: &Vec<Vec<Tile>>) -> Vec<Galaxy> {
+fn get_galaxies(grid: &[Vec<Tile>]) -> Vec<Galaxy> {
     let mut galaxies = Vec::new();
     for (row_index, row) in grid.iter().enumerate() {
         for (col, tile) in row.iter().enumerate() {
@@ -85,7 +85,7 @@ fn get_galaxies(grid: &Vec<Vec<Tile>>) -> Vec<Galaxy> {
             }
         }
     }
-    return galaxies;
+    galaxies
 }
 fn calculate_shortest_path(grid: &Vec<Vec<Tile>>, start: Point, end: Point) -> i64 {
     // Standard bfs implementation
@@ -120,7 +120,7 @@ fn calculate_shortest_path(grid: &Vec<Vec<Tile>>, start: Point, end: Point) -> i
     panic!("No path found. Should not happen!")
 }
 
-fn get_distance_betwixt_galaxies(grid: &Vec<Vec<Tile>>, expansion_magnitude: u32) -> i64 {
+fn get_distance_betwixt_galaxies(grid: &[Vec<Tile>], expansion_magnitude: u32) -> i64 {
     let expanded_grid = expand_grid(grid.to_vec(), expansion_magnitude);
     let mut total = 0;
     let galaxies = get_galaxies(&expanded_grid);

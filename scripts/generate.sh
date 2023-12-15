@@ -27,7 +27,7 @@ cat >"${BASE_SRC_PATH}/q${DAY}.rs" <<EOF
 use crate::utils::parser::{parse, FileLines};
 
 struct Input {
-    value: u32
+    value: usize
 }
 
 impl TryFrom<FileLines> for Input {
@@ -38,12 +38,12 @@ impl TryFrom<FileLines> for Input {
     }
 }
 
-fn part_1(input_file: &str) -> std::io::Result<u32> {
+fn part_1(input_file: &str) -> std::io::Result<usize> {
     let input: Input = parse(input_file)?;
     Ok(0)
 }
 
-fn part_2(input_file: &str) -> std::io::Result<u32> {
+fn part_2(input_file: &str) -> std::io::Result<usize> {
     let input: Input = parse(input_file)?;
     Ok(0)
 }

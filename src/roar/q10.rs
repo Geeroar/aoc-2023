@@ -42,12 +42,12 @@ struct Input {
 impl TryFrom<FileLines> for Input {
     type Error = std::io::Error;
 
-    fn try_from(mut file_lines: FileLines) -> Result<Self, Self::Error> {
+    fn try_from(file_lines: FileLines) -> Result<Self, Self::Error> {
         let mut nodes: HashMap<Location, Node> = HashMap::new();
         let mut row: i64 = 0;
         let mut start_node_location = (0, 0);
         let mut width = 0;
-        while let Some(line) = file_lines.next() {
+        for line in file_lines {
             for (col, pipe) in line.chars().enumerate() {
                 let col: i64 = col as i64;
                 let location = (row, col);
@@ -230,7 +230,7 @@ fn get_points_inside_loop(graph: &Graph, loop_points: &HashSet<Location>) -> Has
         .nodes
         .iter()
         // Filter to only get dot points outside the loop
-        .filter(|(location, &ref node)| !loop_points.contains(&location))
+        .filter(|(location, node)| !loop_points.contains(location))
         .map(|(location, _)| location)
         .collect();
     let mut point_inside_loop = HashSet::new();
