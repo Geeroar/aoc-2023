@@ -175,6 +175,6 @@ mod tests {
     #[test]
     fn roar_q15_p2_main() {
         let result = part_2(INPUT);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 244199);
     }
 }
