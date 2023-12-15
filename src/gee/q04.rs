@@ -1,57 +1,59 @@
+#![allow(dead_code)]
+
 use crate::utils::parser::FileLines;
 use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Input {
-    _cards: Vec<Card>,
+    cards: Vec<Card>,
 }
 
 #[derive(Debug)]
 struct Card {
-    _winning: HashSet<u32>,
-    _numbers: Vec<u32>,
+    winning: HashSet<u32>,
+    numbers: Vec<u32>,
 }
 
 impl TryFrom<FileLines> for Input {
     type Error = std::io::Error;
 
-    fn try_from(_lines: FileLines) -> Result<Self, Self::Error> {
-        let _cards = _lines
+    fn try_from(lines: FileLines) -> Result<Self, Self::Error> {
+        let cards = lines
             .map(|line| {
                 let (win, have) = line.split_once(": ").unwrap().1.split_once(" | ").unwrap();
                 Card {
-                    _winning: HashSet::from_iter(
+                    winning: HashSet::from_iter(
                         win.split_whitespace().map(|s| s.parse::<u32>().unwrap()),
                     ),
-                    _numbers: have
+                    numbers: have
                         .split_whitespace()
                         .map(|s| s.parse::<u32>().unwrap())
                         .collect(),
                 }
             })
             .collect();
-        Ok(Input { _cards })
+        Ok(Input { cards })
     }
 }
 
 impl Input {
-    fn _total_scratchcards(&self) -> usize {
+    fn total_scratchcards(&self) -> usize {
         let won_cards: usize = self
-            ._cards
+            .cards
             .iter()
             .enumerate()
-            .map(|(i, _)| self._find_won_scratchcards(i))
+            .map(|(i, _)| self.find_won_scratchcards(i))
             .sum();
-        self._cards.len() + won_cards
+        self.cards.len() + won_cards
     }
 
-    fn _find_won_scratchcards(&self, index: usize) -> usize {
-        let winners = self._cards[index]._winners();
+    fn find_won_scratchcards(&self, index: usize) -> usize {
+        let winners = self.cards[index].winners();
         if winners == 0 {
             0
         } else {
             let others: usize = ((index + 1)..=(index + winners))
-                .map(|i| self._find_won_scratchcards(i))
+                .map(|i| self.find_won_scratchcards(i))
                 .sum();
             winners + others
         }
@@ -59,8 +61,8 @@ impl Input {
 }
 
 impl Card {
-    fn _score(&self) -> u32 {
-        let winners = self._winners();
+    fn score(&self) -> u32 {
+        let winners = self.winners();
         if winners == 0 {
             0
         } else {
@@ -68,53 +70,53 @@ impl Card {
         }
     }
 
-    fn _winners(&self) -> usize {
-        self._numbers
+    fn winners(&self) -> usize {
+        self.numbers
             .iter()
-            .filter(|n| self._winning.contains(n))
+            .filter(|n| self.winning.contains(n))
             .count()
     }
 }
 
-fn _part_1(input_file: &str) -> std::io::Result<u32> {
+fn part_1(input_file: &str) -> std::io::Result<u32> {
     let input = Input::try_from(FileLines::new(input_file)?)?;
-    Ok(input._cards.iter().map(|c| c._score()).sum())
+    Ok(input.cards.iter().map(|c| c.score()).sum())
 }
 
-fn _part_2(input_file: &str) -> std::io::Result<usize> {
+fn part_2(input_file: &str) -> std::io::Result<usize> {
     let input = Input::try_from(FileLines::new(input_file)?)?;
-    Ok(input._total_scratchcards())
+    Ok(input.total_scratchcards())
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{_part_1, _part_2};
+    use super::{part_1, part_2};
 
     const INPUT: &str = "input/gee/q04_input.txt";
     const INPUT_SAMPLE: &str = "input/gee/q04_sample.txt";
 
     #[test]
     fn gee_q04_p1_sample() {
-        let result = _part_1(INPUT_SAMPLE);
+        let result = part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 13);
     }
 
     #[test]
     fn gee_q04_p1_main() {
-        let result = _part_1(INPUT);
+        let result = part_1(INPUT);
         assert_eq!(result.unwrap(), 23028);
     }
 
     #[test]
     fn gee_q04_p2_sample() {
-        let result = _part_2(INPUT_SAMPLE);
+        let result = part_2(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 30);
     }
 
     #[ignore]
     #[test]
     fn gee_q04_p2_main() {
-        let result = _part_2(INPUT);
+        let result = part_2(INPUT);
         assert_eq!(result.unwrap(), 9236992);
     }
 }
