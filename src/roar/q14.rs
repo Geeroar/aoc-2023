@@ -3,7 +3,7 @@
 use crate::utils::parser::{parse, FileLines};
 
 struct Input {
-    value: usize
+    value: usize,
 }
 
 impl TryFrom<FileLines> for Input {
