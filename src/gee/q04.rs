@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::utils::parser::FileLines;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug)]
 struct Input {
@@ -38,13 +38,18 @@ impl TryFrom<FileLines> for Input {
 
 impl Input {
     fn total_scratchcards(&self) -> usize {
-        let won_cards: usize = self
-            .cards
-            .iter()
-            .enumerate()
-            .map(|(i, _)| self.find_won_scratchcards(i))
-            .sum();
-        self.cards.len() + won_cards
+        let mut cards = HashMap::<usize, usize>::new();
+        for (i, c) in self.cards.iter().enumerate() {
+            let card_count = 1 + *cards.get(&i).unwrap_or(&0);
+            let winners = c.winners();
+            (1..=winners).for_each(|n| {
+                cards
+                    .entry(i + n)
+                    .and_modify(|v| *v += card_count)
+                    .or_insert(card_count);
+            });
+        }
+        cards.values().sum::<usize>() + self.cards.len()
     }
 
     fn find_won_scratchcards(&self, index: usize) -> usize {
@@ -113,7 +118,6 @@ mod tests {
         assert_eq!(result.unwrap(), 30);
     }
 
-    #[ignore]
     #[test]
     fn gee_q04_p2_main() {
         let result = part_2(INPUT);
