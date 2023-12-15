@@ -110,14 +110,12 @@ fn part_2(input_file: &str) -> std::io::Result<u32> {
             } else {
                 current_box.push(instruction);
             }
-        } else {
-            if let Some((index, _)) = current_box
-                .iter()
-                .enumerate()
-                .find(|(_, instruction_in_box)| instruction_in_box.label == instruction.label)
-            {
-                current_box.remove(index);
-            }
+        } else if let Some((index, _)) = current_box
+            .iter()
+            .enumerate()
+            .find(|(_, instruction_in_box)| instruction_in_box.label == instruction.label)
+        {
+            current_box.remove(index);
         }
     }
 

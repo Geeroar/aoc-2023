@@ -11,14 +11,14 @@ fn find_reflection_line(pattern: &Vec<String>) -> usize {
     match find_horizontal_reflection(pattern) {
         Some(row) => {
             println!("Found horizontal reflection at row {}", row);
-            return 100 * (row + 1);
+            100 * (row + 1)
         } // 100 times the rows above the line
         None => {
             // If no horizontal reflection, then check for vertical
             match find_vertical_reflection(pattern) {
                 Some(col) => {
                     println!("Found vertical reflection at column {}", col);
-                    return col + 1;
+                    col + 1
                 } // Columns to the left of the line
                 None => 0, // If no reflection line found (should not happen in this puzzle)
             }
@@ -40,7 +40,7 @@ fn find_horizontal_reflection(pattern: &Vec<String>) -> Option<usize> {
     None
 }
 
-fn find_vertical_reflection(pattern: &Vec<String>) -> Option<usize> {
+fn find_vertical_reflection(pattern: &[String]) -> Option<usize> {
     let n_cols = pattern[0].len();
 
     for col in 0..n_cols / 2 {
@@ -84,7 +84,7 @@ fn part_1(input_file: &str) -> std::io::Result<u32> {
     let sum = input
         .patterns
         .iter()
-        .map(|pattern| find_reflection_line(pattern))
+        .map(find_reflection_line)
         .sum::<usize>();
     println!("Total sum: {}", sum);
     Ok(sum as u32)
