@@ -6,53 +6,83 @@ struct Input {
     patterns: Vec<Vec<String>>,
 }
 
-fn find_reflection_line(pattern: &Vec<String>) -> usize {
-    // First try to find a horizontal reflection
-    match find_horizontal_reflection(pattern) {
-        Some(row) => {
-            println!("Found horizontal reflection at row {}", row);
-            return 100 * (row + 1);
-        } // 100 times the rows above the line
-        None => {
-            // If no horizontal reflection, then check for vertical
-            match find_vertical_reflection(pattern) {
-                Some(col) => {
-                    println!("Found vertical reflection at column {}", col);
-                    return col + 1;
-                } // Columns to the left of the line
-                None => 0, // If no reflection line found (should not happen in this puzzle)
+fn is_perfect_reflection_from_point(pattern: Vec<String>, point: usize) -> bool {
+    let mut right = point + 1;
+    let mut left = point - 2;
+    while right < pattern.len() {
+        let row = &pattern[right];
+        let reflection_row = &pattern[left];
+        if row != reflection_row {
+            return false;
+        }
+        if left == 0 {
+            break;
+        }
+        left -= 1;
+        right += 1;
+    }
+    return true;
+}
+
+fn find_reflection(pattern: Vec<String>) -> Option<usize> {
+    let size = pattern.len();
+    for (i, pat) in pattern.iter().enumerate() {
+        println!("Checking pattern: {}", pat);
+        if i == size - 1 {
+            break;
+        }
+        if *pat == pattern[i + 1] {
+            if i == 0 {
+                return Some(i + 1);
+            }
+            // Check the reflection holds from this point by scanning out from here
+            if is_perfect_reflection_from_point(pattern.clone(), i + 1) {
+                return Some(i + 1);
             }
         }
     }
+    return None;
 }
 
-fn find_horizontal_reflection(pattern: &Vec<String>) -> Option<usize> {
-    let n_rows = pattern.len();
+fn transpose_pattern(pattern: Vec<String>) -> Vec<String> {
+    let matrix: Vec<Vec<char>> = pattern.iter().map(|s| s.chars().collect()).collect();
 
-    for row in 0..n_rows / 2 {
-        let mirror_row = n_rows - row - 1;
-        if (0..pattern[0].len())
-            .all(|col| pattern[row].chars().nth(col) == pattern[mirror_row].chars().nth(col))
-        {
-            return Some(row);
+    let rows = matrix.len();
+    let cols = matrix[0].len();
+
+    // Create a new 2D vector for the transposed matrix
+    let mut transposed_matrix = vec![vec![' '; rows]; cols];
+
+    // Transpose the matrix
+    for (i, row) in matrix.iter().enumerate() {
+        for (j, &value) in row.iter().enumerate() {
+            transposed_matrix[j][i] = value;
         }
     }
-    None
+
+    // Convert the vectors back to strings
+    let transposed_strings: Vec<String> = transposed_matrix
+        .into_iter()
+        .map(|row| row.into_iter().collect())
+        .collect();
+
+
+    return transposed_strings
 }
 
-fn find_vertical_reflection(pattern: &Vec<String>) -> Option<usize> {
-    let n_cols = pattern[0].len();
+fn calculate_pattern_summary(pattern: &Vec<String>) -> usize {
+    let reflection_row = find_reflection(pattern.to_vec());
 
-    for col in 0..n_cols / 2 {
-        let mirror_col = n_cols - col - 1;
-        if pattern
-            .iter()
-            .all(|row| row.chars().nth(col) == row.chars().nth(mirror_col))
-        {
-            return Some(col);
-        }
+    if reflection_row.is_some() {
+        let row = reflection_row.unwrap();
+        println!("Found reflection at row {}", row);
+        return row * 100;
     }
-    None
+    let transposed_pattern = transpose_pattern(pattern.to_vec());
+    let reflection_col = find_reflection(transposed_pattern).unwrap();
+    println!("Found reflection at col {}", reflection_col);
+
+    return reflection_col;
 }
 
 impl TryFrom<FileLines> for Input {
@@ -84,7 +114,7 @@ fn part_1(input_file: &str) -> std::io::Result<u32> {
     let sum = input
         .patterns
         .iter()
-        .map(|pattern| find_reflection_line(pattern))
+        .map(|pattern| calculate_pattern_summary(pattern))
         .sum::<usize>();
     println!("Total sum: {}", sum);
     Ok(sum as u32)
@@ -102,19 +132,17 @@ mod tests {
     const INPUT: &str = "input/roar/q13_input.txt";
     const INPUT_SAMPLE: &str = "input/roar/q13_sample.txt";
 
-    #[ignore]
     #[test]
     fn roar_q13_p1_sample() {
         let result = part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 405);
     }
 
-    #[ignore]
     #[test]
     fn roar_q13_p1_main() {
         let result = part_1(INPUT);
         // TODO: don't know this answer yet
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 34202);
     }
 
     #[test]
