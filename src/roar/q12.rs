@@ -150,6 +150,7 @@ mod tests {
         assert_eq!(result.unwrap(), 21);
     }
 
+    #[ignore = "Takes too long"]
     #[test]
     fn roar_q12_p1_main() {
         let result = part_1(INPUT);

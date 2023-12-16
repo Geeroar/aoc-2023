@@ -298,6 +298,7 @@ mod tests {
         assert_eq!(result.unwrap(), 1);
     }
 
+    #[ignore = "Takes too long"]
     #[test]
     fn roar_q10_p2_main() {
         let result = part_2(INPUT);

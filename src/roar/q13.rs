@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_variables)]
 
 use crate::utils::parser::{parse, FileLines};
+use crate::utils::transposer::transpose_vec_of_strings;
 
 struct Input {
     patterns: Vec<Vec<String>>,
@@ -44,32 +45,6 @@ fn find_reflection(pattern: Vec<String>) -> Option<usize> {
     return None;
 }
 
-fn transpose_pattern(pattern: Vec<String>) -> Vec<String> {
-    let matrix: Vec<Vec<char>> = pattern.iter().map(|s| s.chars().collect()).collect();
-
-    let rows = matrix.len();
-    let cols = matrix[0].len();
-
-    // Create a new 2D vector for the transposed matrix
-    let mut transposed_matrix = vec![vec![' '; rows]; cols];
-
-    // Transpose the matrix
-    for (i, row) in matrix.iter().enumerate() {
-        for (j, &value) in row.iter().enumerate() {
-            transposed_matrix[j][i] = value;
-        }
-    }
-
-    // Convert the vectors back to strings
-    let transposed_strings: Vec<String> = transposed_matrix
-        .into_iter()
-        .map(|row| row.into_iter().collect())
-        .collect();
-
-
-    return transposed_strings
-}
-
 fn calculate_pattern_summary(pattern: &Vec<String>) -> usize {
     let reflection_row = find_reflection(pattern.to_vec());
 
@@ -78,7 +53,7 @@ fn calculate_pattern_summary(pattern: &Vec<String>) -> usize {
         println!("Found reflection at row {}", row);
         return row * 100;
     }
-    let transposed_pattern = transpose_pattern(pattern.to_vec());
+    let transposed_pattern = transpose_vec_of_strings(pattern.to_vec());
     let reflection_col = find_reflection(transposed_pattern).unwrap();
     println!("Found reflection at col {}", reflection_col);
 
