@@ -73,7 +73,6 @@ fn tilt_row(row: String, direction: TiltDirection) -> String {
     format!("{}{}{}", start, sorted_sections.join("#"), end)
 }
 
-
 fn part_1(input_file: &str) -> std::io::Result<usize> {
     let input: Input = parse(input_file)?;
     let mut transposed_platform = transpose_vec_of_strings(input.platform);
@@ -117,8 +116,6 @@ fn part_2(input_file: &str) -> std::io::Result<usize> {
         let tilted_east = transpose_vec_of_strings(tilted_south);
 
         tilted_platform = transpose_vec_of_strings(tilted_east);
-
-
     }
     for (i, row) in tilted_platform.iter().enumerate() {
         let value = tilted_platform.len() - i;
