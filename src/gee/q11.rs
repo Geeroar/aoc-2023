@@ -65,7 +65,6 @@ fn build_expansion_map(
 ) -> HashMap<usize, usize> {
     let max_item = *all_items.iter().max().unwrap();
     let empties: HashSet<usize> = (0..max_item)
-        .into_iter()
         .filter(|i| !all_items.contains(i))
         .collect();
     let mut distance = 0;

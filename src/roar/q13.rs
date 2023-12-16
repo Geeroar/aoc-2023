@@ -22,7 +22,7 @@ fn is_perfect_reflection_from_point(pattern: Vec<String>, point: usize) -> bool 
         left -= 1;
         right += 1;
     }
-    return true;
+    true
 }
 
 fn find_reflection(pattern: Vec<String>) -> Option<usize> {
@@ -42,10 +42,10 @@ fn find_reflection(pattern: Vec<String>) -> Option<usize> {
             }
         }
     }
-    return None;
+    None
 }
 
-fn calculate_pattern_summary(pattern: &Vec<String>) -> usize {
+fn calculate_pattern_summary(pattern: &[String]) -> usize {
     let reflection_row = find_reflection(pattern.to_vec());
 
     if reflection_row.is_some() {
@@ -57,7 +57,7 @@ fn calculate_pattern_summary(pattern: &Vec<String>) -> usize {
     let reflection_col = find_reflection(transposed_pattern).unwrap();
     println!("Found reflection at col {}", reflection_col);
 
-    return reflection_col;
+    reflection_col
 }
 
 impl TryFrom<FileLines> for Input {
@@ -89,7 +89,7 @@ fn part_1(input_file: &str) -> std::io::Result<u32> {
     let sum = input
         .patterns
         .iter()
-        .map(|pattern| calculate_pattern_summary(pattern))
+        .map(calculate_pattern_summary)
         .sum::<usize>();
     println!("Total sum: {}", sum);
     Ok(sum as u32)
