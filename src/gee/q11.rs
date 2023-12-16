@@ -64,10 +64,7 @@ fn build_expansion_map(
     all_items: &HashSet<usize>,
 ) -> HashMap<usize, usize> {
     let max_item = *all_items.iter().max().unwrap();
-    let empties: HashSet<usize> = (0..max_item)
-        .into_iter()
-        .filter(|i| !all_items.contains(i))
-        .collect();
+    let empties: HashSet<usize> = (0..max_item).filter(|i| !all_items.contains(i)).collect();
     let mut distance = 0;
     let mut expansion_map = HashMap::new();
     for i in 0..=max_item {

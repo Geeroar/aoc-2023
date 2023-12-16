@@ -59,8 +59,7 @@ impl Row {
             let remaining_groups_boundaries = self.groups.len() - (i + 1);
             let space_for_remaining_groups = remaining_groups_size + remaining_groups_boundaries;
             let end_index = self.springs.len() - space_for_remaining_groups;
-            while !queue.is_empty() {
-                let (start_index, count) = queue.pop().unwrap();
+            while let Some((start_index, count)) = queue.pop() {
                 for index in start_index..end_index {
                     if self.matches(index, group_size) {
                         let next_index = index + group_size + 1;

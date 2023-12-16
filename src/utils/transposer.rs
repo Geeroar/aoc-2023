@@ -42,7 +42,7 @@ pub fn transpose_vec_of_strings(vec_of_string: Vec<String>) -> Vec<String> {
         .map(|row| row.into_iter().collect())
         .collect();
 
-    return transposed_strings;
+    transposed_strings
 }
 
 #[cfg(test)]
@@ -52,12 +52,12 @@ mod tests {
 
     #[test]
     fn test_transposing() {
-        let input: Vec<String> = vec!["*##", "#**", "**#"]
+        let input: Vec<String> = ["*##", "#**", "**#"]
             .iter()
             .map(|s| s.to_string())
             .collect();
 
-        let expected: Vec<String> = vec!["*#*", "#**", "#*#"]
+        let expected: Vec<String> = ["*#*", "#**", "#*#"]
             .iter()
             .map(|s| s.to_string())
             .collect();
@@ -67,7 +67,7 @@ mod tests {
 
     #[test]
     fn test_double_transpose() {
-        let input: Vec<String> = vec!["*##", "#**", "**#"]
+        let input: Vec<String> = ["*##", "#**", "**#"]
             .iter()
             .map(|s| s.to_string())
             .collect();
