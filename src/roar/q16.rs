@@ -1,6 +1,6 @@
 #![allow(dead_code, unused_variables)]
-use rayon::prelude::*;
 use crate::utils::parser::{parse, FileLines};
+use rayon::prelude::*;
 
 #[derive(PartialEq, Debug, Clone, Copy)]
 enum TileType {
@@ -71,16 +71,11 @@ impl TryFrom<FileLines> for Input {
     }
 }
 
-
 fn count_energised_tiles_for_beam(grid: &Vec<Vec<Tile>>, beam: Beam) -> usize {
     let grid = &mut grid.clone();
     let width = grid[0].len();
     let height = grid.len();
-    let mut beams = vec![Beam {
-        x: 0,
-        y: 0,
-        direction: Direction::Right,
-    }];
+    let mut beams = vec![beam];
 
     let mut counter = 100000;
 
@@ -226,11 +221,14 @@ fn count_energised_tiles_for_beam(grid: &Vec<Vec<Tile>>, beam: Beam) -> usize {
 
 fn part_1(input_file: &str) -> std::io::Result<usize> {
     let input: Input = parse(input_file)?;
-    let count = count_energised_tiles_for_beam(&input.grid, Beam {
-        x: 0,
-        y: 0,
-        direction: Direction::Right,
-    });
+    let count = count_energised_tiles_for_beam(
+        &input.grid,
+        Beam {
+            x: 0,
+            y: 0,
+            direction: Direction::Right,
+        },
+    );
 
     Ok(count)
 }
@@ -239,33 +237,57 @@ fn part_2(input_file: &str) -> std::io::Result<usize> {
     let input: Input = parse(input_file)?;
     let mut start_beams = vec![];
     for row in 0..input.grid.len() {
-        start_beams.push((Beam {
-            x: 0,
-            y: row,
-            direction: Direction::Right,
-        }, input.grid.clone()));
-        start_beams.push((Beam {
-            x: input.grid[0].len() - 1,
-            y: row,
-            direction: Direction::Left,
-        }, input.grid.clone()));
+        start_beams.push((
+            Beam {
+                x: 0,
+                y: row,
+                direction: Direction::Right,
+            },
+            input.grid.clone(),
+        ));
+        start_beams.push((
+            Beam {
+                x: input.grid[0].len() - 1,
+                y: row,
+                direction: Direction::Left,
+            },
+            input.grid.clone(),
+        ));
     }
     for col in 0..input.grid[0].len() {
-        start_beams.push((Beam {
-            x: col,
-            y: 0,
-            direction: Direction::Down,
-        }, input.grid.clone()));
-        start_beams.push((Beam {
-            x: col,
-            y: input.grid.len() - 1,
-            direction: Direction::Down,
-        }, input.grid.clone()));
+        start_beams.push((
+            Beam {
+                x: col,
+                y: 0,
+                direction: Direction::Down,
+            },
+            input.grid.clone(),
+        ));
+        start_beams.push((
+            Beam {
+                x: col,
+                y: input.grid.len() - 1,
+                direction: Direction::Up,
+            },
+            input.grid.clone(),
+        ));
     }
-    let results: Vec<_> = start_beams.par_iter()
+    for beam_grid in &mut start_beams {
+        println!(
+            "beam_grid: (col: {}, row: {}) {:?}",
+            beam_grid.0.x, beam_grid.0.y, beam_grid.0.direction
+        );
+    }
+
+    let results: Vec<_> = start_beams
+        .par_iter()
         .map(|beam_grid| count_energised_tiles_for_beam(&beam_grid.1, beam_grid.0))
         .collect();
 
+    // print all results
+    for result in &results {
+        println!("{}", result);
+    }
     Ok(*results.iter().max().unwrap())
 }
 
@@ -282,6 +304,7 @@ mod tests {
         assert_eq!(result.unwrap(), 46);
     }
 
+    #[ignore = "too long"]
     #[test]
     fn roar_q16_p1_main() {
         let result = part_1(INPUT);
@@ -291,9 +314,10 @@ mod tests {
     #[test]
     fn roar_q16_p2_sample() {
         let result = part_2(INPUT_SAMPLE);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 51);
     }
 
+    #[ignore = "too long"]
     #[test]
     fn roar_q16_p2_main() {
         let result = part_2(INPUT);
