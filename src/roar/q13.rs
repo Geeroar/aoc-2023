@@ -89,7 +89,7 @@ fn part_1(input_file: &str) -> std::io::Result<u32> {
     let sum = input
         .patterns
         .iter()
-        .map(calculate_pattern_summary)
+        .map(|pattern| calculate_pattern_summary(&pattern[..]))
         .sum::<usize>();
     println!("Total sum: {}", sum);
     Ok(sum as u32)
