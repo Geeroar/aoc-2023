@@ -2,11 +2,9 @@
 
 use crate::utils::parser::{parse, FileLines};
 
-struct Trench {
-
-}
+struct Trench {}
 struct Input {
-    value: usize
+    value: usize,
 }
 
 impl TryFrom<FileLines> for Input {
