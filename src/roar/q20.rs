@@ -12,7 +12,7 @@ enum Pulse {
 
 #[derive(Debug, Clone)]
 enum ModuleType {
-    FlipFlop(bool),                      // Stores state: on/off - false = off, true = on
+    FlipFlop(bool), // Stores state: on/off - false = off, true = on
     Conjunction(HashMap<String, Pulse>), // Stores state of inputs
     Broadcaster,
 }
@@ -32,7 +32,7 @@ struct Counter {
 
 struct SystemState {
     modules: HashMap<String, Module>,
-    pulse_queue: VecDeque<(String, String, Pulse)>, // Queue for pulses: (module_name, pulse_type)
+    pulse_queue: VecDeque<(String, String, Pulse)>,// (module_name, source, pulse)
     counter: Counter,
 }
 
@@ -200,7 +200,6 @@ fn part_1(input_file: &str) -> std::io::Result<usize> {
     let mut system_state: SystemState = input.state;
     system_state.map_inputs();
 
-    // Print state.modules hashmap
     for (module_name, module) in &system_state.modules {
         println!("{}: {:?}", module_name, module);
     }
