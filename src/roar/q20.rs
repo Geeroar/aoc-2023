@@ -12,7 +12,7 @@ enum Pulse {
 
 #[derive(Debug, Clone)]
 enum ModuleType {
-    FlipFlop(bool), // Stores state: on/off - false = off, true = on
+    FlipFlop(bool),                      // Stores state: on/off - false = off, true = on
     Conjunction(HashMap<String, Pulse>), // Stores state of inputs
     Broadcaster,
 }
@@ -32,7 +32,7 @@ struct Counter {
 
 struct SystemState {
     modules: HashMap<String, Module>,
-    pulse_queue: VecDeque<(String, String, Pulse)>,// (module_name, source, pulse)
+    pulse_queue: VecDeque<(String, String, Pulse)>, // (module_name, source, pulse)
     counter: Counter,
 }
 
