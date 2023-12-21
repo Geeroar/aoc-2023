@@ -1,6 +1,6 @@
 #![allow(dead_code, unused_variables)]
 
-use std::collections::HashSet;
+use std::collections::{HashSet, VecDeque};
 
 use crate::utils::parser::{parse, FileLines};
 
@@ -64,13 +64,13 @@ fn get_reachable_plots(
     steps: usize,
 ) -> HashSet<Point> {
     let mut visited = HashSet::new();
-    let mut queue = Vec::new();
+    let mut queue = VecDeque::new();
     let mut points = HashSet::new();
 
-    queue.push((start, 0)); // Starting position with 0 steps
-    visited.insert(start);
+    queue.push_back((start, 0));
+    visited.insert((start, 0));
 
-    while let Some((position, step)) = queue.pop() {
+    while let Some((position, step)) = queue.pop_front() {
         if step == steps {
             points.insert(Point {
                 row: position.0,
@@ -80,9 +80,10 @@ fn get_reachable_plots(
         }
 
         for neighbor in get_neighbors(position, garden_map) {
-            if !visited.contains(&neighbor) && step < steps {
-                visited.insert(neighbor);
-                queue.push((neighbor, step + 1));
+            let next_step = step + 1;
+            if !visited.contains(&(neighbor, next_step)) && next_step <= steps {
+                visited.insert((neighbor, next_step));
+                queue.push_back((neighbor, next_step));
             }
         }
     }
@@ -159,7 +160,7 @@ mod tests {
     #[test]
     fn roar_q21_p1_main() {
         let result = part_1(64, INPUT);
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 3658);
     }
 
     #[test]
