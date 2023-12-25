@@ -1,146 +1,104 @@
 #![allow(dead_code, unused_variables)]
-
-use std::collections::HashMap;
-use std::collections::HashSet;
-
 use crate::utils::parser::{parse, FileLines};
+use std::collections::VecDeque;
+use std::collections::{HashMap, HashSet};
 
 struct Input {
-    wiring_diagram: HashMap<String, Vec<String>>,
+    graph: HashMap<String, HashSet<String>>,
 }
 
 impl TryFrom<FileLines> for Input {
     type Error = std::io::Error;
 
     fn try_from(lines: FileLines) -> Result<Self, Self::Error> {
-        let mut wiring_diagram: HashMap<String, Vec<String>> = HashMap::new();
+        let mut graph: HashMap<String, HashSet<String>> = HashMap::new();
 
         for line in lines {
-            let parts: Vec<&str> = line.split(":").map(|s| s.trim()).collect();
-            let key = parts[0].to_owned();
-            let values = parts[1]
+            let parts: Vec<_> = line.split(": ").map(String::from).collect();
+            let node = parts[0].clone();
+            let neighbors = parts[1]
                 .split_whitespace()
-                .map(|s| s.to_owned())
-                .collect::<Vec<_>>();
+                .map(String::from)
+                .collect::<HashSet<_>>();
 
-            for value in &values {
-                wiring_diagram
-                    .entry(key.clone())
+            for neighbor in &neighbors {
+                graph
+                    .entry(node.clone())
                     .or_default()
-                    .push(value.clone());
-                wiring_diagram
-                    .entry(value.clone())
+                    .insert(neighbor.clone());
+                graph
+                    .entry(neighbor.clone())
                     .or_default()
-                    .push(key.clone());
+                    .insert(node.clone());
             }
         }
-        Ok(Input { wiring_diagram })
+
+        Ok(Input { graph })
     }
 }
 
-fn dfs(
-    node: &String,
-    visited: &mut HashSet<String>,
-    wiring_diagram: &HashMap<String, Vec<String>>,
-) -> usize {
-    visited.insert(node.clone());
-    let mut size = 1; // Count the current node
+fn find_bridge(graph: &HashMap<String, HashSet<String>>) -> (String, String) {
+    let mut paths: HashMap<(String, String), usize> = HashMap::new();
 
-    if let Some(neighbors) = wiring_diagram.get(node) {
-        for neighbor in neighbors {
-            if !visited.contains(neighbor) {
-                size += dfs(neighbor, visited, wiring_diagram); // Recursively visit neighbors
-            }
-        }
-    }
+    for start in graph.keys() {
+        let mut to_see = VecDeque::new();
+        to_see.push_back(start.clone());
+        let mut seen = HashSet::new();
+        seen.insert(start.clone());
 
-    size
-}
-
-fn disconnect_edge(node1: &str, node2: &str, diagram: &mut HashMap<String, Vec<String>>) {
-    if let Some(neighbors) = diagram.get_mut(node1) {
-        neighbors.retain(|x| x != node2);
-    }
-    if let Some(neighbors) = diagram.get_mut(node2) {
-        neighbors.retain(|x| x != node1);
-    }
-}
-
-fn divide_graph_into_groups(wiring_diagram: &HashMap<String, Vec<String>>) -> usize {
-    let mut max_product = 0;
-
-    let mut edges = Vec::new();
-    for (node, neighbors) in wiring_diagram {
-        for neighbor in neighbors {
-            edges.push((node.clone(), neighbor.clone()));
-        }
-    }
-
-    // Try disconnecting each combination of three edges
-    let edge_count = edges.len();
-    for i in 0..edge_count {
-        for j in i + 1..edge_count {
-            for k in j + 1..edge_count {
-                // Create a copy of the wiring diagram
-                let mut modified_diagram = wiring_diagram.clone();
-
-                // Disconnect the selected edges
-                disconnect_edge(&edges[i].0, &edges[i].1, &mut modified_diagram);
-                disconnect_edge(&edges[j].0, &edges[j].1, &mut modified_diagram);
-                disconnect_edge(&edges[k].0, &edges[k].1, &mut modified_diagram);
-
-                // Disconnect the selected edges
-                modified_diagram
-                    .get_mut(&edges[i].0)
-                    .unwrap()
-                    .retain(|x| x != &edges[i].1);
-                modified_diagram
-                    .get_mut(&edges[i].1)
-                    .unwrap()
-                    .retain(|x| x != &edges[i].0);
-                modified_diagram
-                    .get_mut(&edges[j].0)
-                    .unwrap()
-                    .retain(|x| x != &edges[j].1);
-                modified_diagram
-                    .get_mut(&edges[j].1)
-                    .unwrap()
-                    .retain(|x| x != &edges[j].0);
-                modified_diagram
-                    .get_mut(&edges[k].0)
-                    .unwrap()
-                    .retain(|x| x != &edges[k].1);
-                modified_diagram
-                    .get_mut(&edges[k].1)
-                    .unwrap()
-                    .retain(|x| x != &edges[k].0);
-
-                // Calculate the size of the groups
-                let mut visited = HashSet::new();
-                let mut group_sizes = Vec::new();
-                for node in modified_diagram.keys() {
-                    if !visited.contains(node) {
-                        let size = dfs(node, &mut visited, &modified_diagram);
-                        group_sizes.push(size);
-                    }
-                }
-
-                if group_sizes.len() == 2 {
-                    let product = group_sizes[0] * group_sizes[1];
-                    if product > max_product {
-                        max_product = product;
-                    }
+        while let Some(node) = to_see.pop_front() {
+            for n in &graph[&node] {
+                if !seen.contains(n) {
+                    to_see.push_back(n.clone());
+                    seen.insert(n.clone());
+                    let edge = if n < &node {
+                        (n.clone(), node.clone())
+                    } else {
+                        (node.clone(), n.clone())
+                    };
+                    *paths.entry(edge).or_default() += 1;
                 }
             }
         }
     }
 
-    max_product
+    paths.into_iter().max_by_key(|&(_, v)| v).unwrap().0
+}
+
+fn bfs_reach(graph: &HashMap<String, HashSet<String>>, start: &str) -> usize {
+    let mut visited = HashSet::new();
+    let mut queue = VecDeque::new();
+    queue.push_back(start.to_string());
+
+    while let Some(node) = queue.pop_front() {
+        if !visited.insert(node.clone()) {
+            continue;
+        }
+
+        if let Some(neighbors) = graph.get(&node) {
+            for neighbor in neighbors {
+                if !visited.contains(neighbor) {
+                    queue.push_back(neighbor.clone());
+                }
+            }
+        }
+    }
+
+    visited.len()
 }
 
 fn part_1(input_file: &str) -> std::io::Result<usize> {
-    let input: Input = parse(input_file)?;
-    Ok(divide_graph_into_groups(&input.wiring_diagram))
+    let mut input: Input = parse(input_file)?;
+
+    for _ in 0..3 {
+        let bridge = find_bridge(&input.graph);
+        input.graph.get_mut(&bridge.0).unwrap().remove(&bridge.1);
+        input.graph.get_mut(&bridge.1).unwrap().remove(&bridge.0);
+    }
+
+    let start = input.graph.keys().next().unwrap().clone();
+    let group_size = bfs_reach(&input.graph, &start);
+    Ok(group_size * (input.graph.len() - group_size))
 }
 
 fn part_2(input_file: &str) -> std::io::Result<usize> {
@@ -165,7 +123,7 @@ mod tests {
     fn roar_q25_p1_main() {
         let result = part_1(INPUT);
         // TODO: Find the actual value
-        assert_eq!(result.unwrap(), 0);
+        assert_eq!(result.unwrap(), 2);
     }
 
     #[test]
