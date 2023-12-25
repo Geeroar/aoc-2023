@@ -22,3 +22,4 @@ mod q21;
 mod q22;
 mod q23;
 mod q24;
+mod q25;
