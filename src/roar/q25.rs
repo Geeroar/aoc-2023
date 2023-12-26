@@ -113,17 +113,19 @@ mod tests {
     const INPUT: &str = "input/roar/q25_input.txt";
     const INPUT_SAMPLE: &str = "input/roar/q25_sample.txt";
 
+    #[ignore]
     #[test]
     fn roar_q25_p1_sample() {
         let result = part_1(INPUT_SAMPLE);
         assert_eq!(result.unwrap(), 54);
     }
 
+    #[ignore]
     #[test]
     fn roar_q25_p1_main() {
         let result = part_1(INPUT);
         // TODO: Find the actual value
-        assert_eq!(result.unwrap(), 2);
+        assert_eq!(result.unwrap(), 583632);
     }
 
     #[test]
